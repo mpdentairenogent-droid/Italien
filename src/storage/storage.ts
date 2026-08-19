@@ -19,6 +19,7 @@ export function defaultState(): PersistedState {
       totalCardsStudiedAllTime: 0,
     },
     log: [],
+    updatedAt: new Date(0).toISOString(),
   };
 }
 

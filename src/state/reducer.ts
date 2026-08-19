@@ -1,6 +1,6 @@
 import { createInitialProgress, reviewCard as applySm2 } from '../srs/sm2';
 import { CardId, DeckId, Flashcard, Grade, PersistedState } from '../types';
-import { daysBetween, todayKey } from '../utils/date';
+import { daysBetween, nowISO, todayKey } from '../utils/date';
 
 const LOG_CAP = 2000;
 
@@ -28,7 +28,17 @@ function updateStreakOnReview(streak: PersistedState['streak']): PersistedState[
   };
 }
 
+/**
+ * Stamps updatedAt on every real mutation so the cloud sync layer can tell which
+ * copy (local vs. Supabase) is newer without a deep comparison of the whole blob.
+ */
 export function appReducer(state: PersistedState, action: Action): PersistedState {
+  const next = coreReducer(state, action);
+  if (action.type === 'HYDRATE' || next === state) return next;
+  return { ...next, updatedAt: nowISO() };
+}
+
+function coreReducer(state: PersistedState, action: Action): PersistedState {
   switch (action.type) {
     case 'HYDRATE':
       return action.payload;

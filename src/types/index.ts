@@ -69,4 +69,6 @@ export interface PersistedState {
   settings: Settings;
   streak: StreakData;
   log: ReviewLogEntry[];
+  /** ISO datetime of the last local mutation, used to resolve sync conflicts against the cloud copy. */
+  updatedAt: string;
 }

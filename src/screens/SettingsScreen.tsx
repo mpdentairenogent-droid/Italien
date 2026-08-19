@@ -1,8 +1,10 @@
 import React from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useAuth } from '../auth/AuthContext';
 import { LoadingView } from '../components/LoadingView';
 import { useAppState } from '../state/AppState';
+import { isSupabaseConfigured } from '../supabase/client';
 import { colors, radius, shadow, spacing, typography } from '../theme/theme';
 
 function Stepper({
@@ -46,6 +48,7 @@ function Stepper({
 
 export function SettingsScreen() {
   const { loading, settings, updateSettings, resetAllProgress } = useAppState();
+  const { user, signOut } = useAuth();
   const insets = useSafeAreaInsets();
 
   if (loading) return <LoadingView />;
@@ -61,6 +64,13 @@ export function SettingsScreen() {
     );
   };
 
+  const handleSignOut = () => {
+    Alert.alert('Se déconnecter ?', 'Votre progression reste sauvegardée dans le cloud.', [
+      { text: 'Annuler', style: 'cancel' },
+      { text: 'Se déconnecter', style: 'destructive', onPress: signOut },
+    ]);
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -68,6 +78,19 @@ export function SettingsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <Text style={styles.title}>Réglages</Text>
+
+      {isSupabaseConfigured && user ? (
+        <>
+          <Text style={styles.sectionTitle}>Compte</Text>
+          <View style={[styles.card, shadow.card]}>
+            <Text style={styles.rowLabel}>{user.email}</Text>
+            <Text style={styles.syncNote}>Votre progression est synchronisée avec le cloud.</Text>
+            <Pressable onPress={handleSignOut} style={styles.signOutButton}>
+              <Text style={styles.dangerText}>Se déconnecter</Text>
+            </Pressable>
+          </View>
+        </>
+      ) : null}
 
       <Text style={styles.sectionTitle}>Session d'apprentissage</Text>
       <View style={[styles.card, shadow.card]}>
@@ -190,6 +213,14 @@ const styles = StyleSheet.create({
     ...typography.bodyBold,
     color: colors.danger,
     textAlign: 'center',
+  },
+  syncNote: {
+    ...typography.small,
+    color: colors.textSecondary,
+    marginTop: spacing.xs,
+  },
+  signOutButton: {
+    marginTop: spacing.lg,
   },
   aboutCard: {
     alignItems: 'center',

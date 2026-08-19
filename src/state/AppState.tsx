@@ -1,6 +1,9 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
+import { useAuth } from '../auth/AuthContext';
 import { BUILTIN_CARDS, DECKS } from '../data';
 import { loadState, saveState } from '../storage/storage';
+import { isSupabaseConfigured } from '../supabase/client';
+import { pickNewerState, pullRemoteState, pushRemoteState } from '../supabase/sync';
 import { CardId, Deck, DeckId, Flashcard, Grade, PersistedState, Settings } from '../types';
 import { generateId } from '../utils/id';
 import { appReducer } from './reducer';
@@ -36,27 +39,41 @@ interface AppStateContextValue {
 const AppStateContext = createContext<AppStateContextValue | null>(null);
 
 export function AppStateProvider({ children }: { children: React.ReactNode }) {
+  const { user } = useAuth();
+  const userId = user?.id;
   const [loading, setLoading] = useState(true);
   const [state, dispatch] = useReducer(appReducer, null as unknown as PersistedState);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    loadState().then((loaded) => {
-      dispatch({ type: 'HYDRATE', payload: loaded });
+    let cancelled = false;
+    loadState().then(async (loaded) => {
+      let merged = loaded;
+      if (isSupabaseConfigured && userId) {
+        const remote = await pullRemoteState(userId);
+        merged = pickNewerState(loaded, remote);
+        if (merged !== loaded) await saveState(merged);
+      }
+      if (cancelled) return;
+      dispatch({ type: 'HYDRATE', payload: merged });
       setLoading(false);
     });
-  }, []);
+    return () => {
+      cancelled = true;
+    };
+  }, [userId]);
 
   useEffect(() => {
     if (loading || !state) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       saveState(state);
+      if (isSupabaseConfigured && userId) pushRemoteState(userId, state);
     }, 350);
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [state, loading]);
+  }, [state, loading, userId]);
 
   const cards = useMemo(() => [...BUILTIN_CARDS, ...(state?.customCards ?? [])], [state?.customCards]);
   const decks = useMemo(() => [...DECKS, CUSTOM_DECK], []);
