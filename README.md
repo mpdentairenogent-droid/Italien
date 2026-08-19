@@ -5,7 +5,7 @@ Application mobile (iPhone) de flashcards **intelligentes** pour apprendre l'ita
 ## Fonctionnalités
 
 - **Répétition espacée intelligente** : chaque carte a son propre intervalle de révision qui s'allonge automatiquement quand vous la maîtrisez, et se raccourcit quand vous la ratez. Les cartes en retard sont toujours proposées en priorité.
-- **216 cartes prêtes à l'emploi** réparties en 12 thèmes : salutations, nombres, famille, nourriture, couleurs, temps, verbes courants, voyage, corps/santé, maison/vêtements, adjectifs, phrases utiles. Chaque carte inclut une phrase d'exemple traduite.
+- **Plus de 1500 cartes prêtes à l'emploi** (1518 exactement) réparties en 44 thèmes : bases, nombres, famille, nourriture, couleurs, temps, verbes, voyage, corps/santé, maison, adjectifs, phrases utiles, animaux, nature, météo, métiers, école, travail, technologie, ville, transports, sport, musique, cinéma/séries, émotions, personnalité, shopping, cuisine, fruits/légumes, restaurant, relations amoureuses, calendrier, grands nombres, géographie/nationalités, société, argent, meubles, adjectifs et verbes avancés, adverbes, expressions idiomatiques, et même un paquet dédié aux **faux amis italien-français**. Chaque carte inclut une phrase d'exemple traduite.
 - **Cartes personnalisées** : ajoutez votre propre vocabulaire dans le paquet « Mes cartes ».
 - **Séance quotidienne intelligente** : mélange automatiquement les cartes à réviser et un nombre limité de nouvelles cartes par jour (réglable), pour ne jamais vous submerger.
 - **Statistiques** : série de jours consécutifs, taux de rétention, répartition nouvelles/en apprentissage/récentes/maîtrisées, détection des cartes difficiles (« leech »).

@@ -3,7 +3,7 @@ import { buildCards, RawCard } from './makeDeck';
 export const DECK_ID = 'phrases';
 
 const rows: RawCard[] = [
-  ['Quanto costa?', 'Combien ça coûte ?', 'Quanto costa questa maglietta?', 'Combien coûte ce t-shirt ?'],
+  ['Come si dice...?', 'Comment dit-on... ?', 'Come si dice "merci" in italiano?', 'Comment dit-on « merci » en italien ?'],
   ['Che ore sono?', 'Quelle heure est-il ?', 'Scusa, che ore sono?', "Excuse-moi, quelle heure est-il ?"],
   ['Dov\'è il bagno?', 'Où sont les toilettes ?', 'Mi scusi, dov\'è il bagno?', 'Excusez-moi, où sont les toilettes ?'],
   ['Aiuto!', 'Au secours !', 'Aiuto, chiamate un medico!', 'Au secours, appelez un médecin !'],
