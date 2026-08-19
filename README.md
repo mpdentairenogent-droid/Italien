@@ -14,7 +14,7 @@ Application mobile (iPhone) de flashcards **intelligentes** pour apprendre l'ita
 
 ## Stack technique
 
-- [Expo](https://expo.dev) (SDK 57) + React Native + TypeScript
+- [Expo](https://expo.dev) (SDK 56) + React Native + TypeScript
 - Navigation maison légère (pas de dépendance react-navigation) avec barre d'onglets iOS-like
 - `@react-native-async-storage/async-storage` pour le cache local (fonctionne hors ligne)
 - `@supabase/supabase-js` pour l'authentification et la sauvegarde cloud de la progression
